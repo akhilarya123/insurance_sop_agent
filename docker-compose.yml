@@ -1,0 +1,15 @@
+services:
+  sop-agent:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      # On Linux with the extra_hosts entry below, "host.docker.internal"
+      # resolves to the Docker host, where your local `ollama serve` runs.
+      # On Docker Desktop (Mac/Windows) this resolves automatically.
+      OLLAMA_HOST: ${OLLAMA_HOST:-http://host.docker.internal:11434}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen3.5:4b}
+      LLM_POLISH_ENABLED: ${LLM_POLISH_ENABLED:-true}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
